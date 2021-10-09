@@ -30,9 +30,8 @@ AWS_Basic
 3. EC2 directory 열기<br>
  : Command Palette에서 ftp-simple: Remote directory open to workspace를 선택
 
-
 # AWS IAM(Identity and Access Management)
-: 유저/접근 레벨/권한에 대한 관리
+: **유저/접근 레벨/권한에 대한 관리**
 
 ## IAM 개요
 + Access key(접근키) , Secret Access Key(비밀키)
@@ -49,8 +48,7 @@ AWS_Basic
 + 정책(Policy) : JSON 형태로 세밀한 접근 권한을 지정한 것 
 > + 그룹, 역할에 정책을 추가할 수도 있음
 > + 하나의 그룹안에 다수의 유저가 존재 할 수 있음
-
-### IAM은 지역 설정이 필요없이 Universal
+> + **IAM은 지역 설정이 필요없이 Universal**
 
 ## IAM 정책 시뮬레이터
 : IAM과 관련된 Problem Debugging 최적화 되어있는 Tool<br>
@@ -86,7 +84,7 @@ AWS_Basic
 + User에게 부여되어있는 정책의 적용여부 선택가능
 
 # Amacon EC2(Elastic Compute Cloud)
-: On-demand 형식으로 비용을 지불하는 Cloud기반 Server
+: **On-demand 형식으로 비용을 지불하는 Cloud기반 Server**
 
 ## EC2 지불 방식
 + On-demand
@@ -108,13 +106,15 @@ AWS_Basic
 + 인스턴스의 시작/종료 시점에 구애받지않는 개발조건에 유리
 
 ## EBS(Elastic Block Storage)
-: EC2 인스턴스에 부착되어 사용되는 Storage Volume
+: **EC2 인스턴스에 부착되어 사용되는 Storage Volume**
 
 ### EBS 개요
 + EC2 Server의 저장공간으로 사용
 + EBS Disk Volume 위에 File System이 생성된다.
 + 특정 AZ(가용영역)에 생성된다.
++ 
 ### EBS Volume Type
+
 + **SSD군**
   + GP2(General Purpose SSD) : 최대 10K IOPS를 지원하여 1GB당 31OPS의 속도
   + IO1(Provisioned IOPS SSD) : 거대한 DB관리와 같은 극도의 I/O비율 요구 환경에 주로 사용. 10K 이상의 IOPS 지원
@@ -124,7 +124,7 @@ AWS_Basic
   + Manetic(Standard) : Root volume으로 사용 가능하며, 1GB 당 비용이 가장 저렴
 
 ## ELB(Elastic Load Balancers)
-: 애플리케이션 트래픽을 Amazon EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산해주는 Tool
+: **애플리케이션 트래픽을 Amazon EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산해주는 Tool**
 
 ### ELB 개요
 + 수많은 서버의 흐름을 균형있게 흘러보내는 중추적인 역할
