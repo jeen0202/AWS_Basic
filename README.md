@@ -14,16 +14,16 @@ AWS_Basic
     ``` json
     [
         {
-            "name":  ftp 연결된 이름 (임의로 지정 가능)
-            "host":  AWS EC2 탄력적 IP주소
-            "port":  SSH 연결이면 22 # 인바운드 규칙에서 22 port 열려있는지 확인
+            "name":  // ftp 연결된 이름 (임의로 지정 가능)
+            "host":  // AWS EC2 탄력적 IP주소
+            "port":  // SSH 연결이면 22 # 인바운드 규칙에서 22 port 열려있는지 확인
             "type": "sftp",
-            "username": "ubuntu",  # putty 설정 때 host name
+            "username": "ubuntu",  // putty 설정 때 host name
             "password": "",
             "path": "/home/username/작업폴더",
             "autosave": true,
             "confirm": false,
-            "privateKey": pem 보안키 경로
+            "privateKey": // pem 보안키 경로
         }
     ]
     ```
