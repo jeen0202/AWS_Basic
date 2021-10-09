@@ -84,3 +84,67 @@ AWS_Basic
 ### 정책 시뮬레이터(Policy Simulator)
 + user와 action을 선택하여 권한 여부 확인 가능
 + User에게 부여되어있는 정책의 적용여부 선택가능
+
+# Amacon EC2(Elastic Compute Cloud)
+: On-demand 형식으로 비용을 지불하는 Cloud기반 Server
+
+## EC2 지불 방식
++ On-demand
++ Reserved(예약)
++ Spot
+
+### On-demand
++ 오랜시간동안 선불없이 최소한의 비용을 지불하여 EC2 인스턴스 사용
++ 개발 종료시간을 알수 없을 경우 유리
++ 단기간 사용이 필요할 경우 유리
+### Reserved
++ 한정된 EC2 용량을 1-3년 동안 미리 정하여 지불
++ 안정되고 예상가능한 workload시 유리
++ 선불요금으로 인한 비용 감소 효과
+### Spot
++ 입찰 가격을 적용하여 가장 큰 할인률로 비용을 지불하지만 여분의 인스턴스가 없을 경우 종료될 수 있음
++ 가격이 중간중간 변동될 수 있음
++ 비용절감에 가장 유리
++ 인스턴스의 시작/종료 시점에 구애받지않는 개발조건에 유리
+
+## EBS(Elastic Block Storage)
+: EC2 인스턴스에 부착되어 사용되는 Storage Volume
+
+### EBS 개요
++ EC2 Server의 저장공간으로 사용
++ EBS Disk Volume 위에 File System이 생성된다.
++ 특정 AZ(가용영역)에 생성된다.
+### EBS Volume Type
++ **SSD군**
+  + GP2(General Purpose SSD) : 최대 10K IOPS를 지원하여 1GB당 31OPS의 속도
+  + IO1(Provisioned IOPS SSD) : 거대한 DB관리와 같은 극도의 I/O비율 요구 환경에 주로 사용. 10K 이상의 IOPS 지원
++ **Magnetic/HDD군**
+  + ST1(Throughtput Optimized HDD) : 빅데이터 Warehouse, Log 프로세싱시 주로 사용되며 boot Volume으로 사용할 수 없음
+  + SC1(CDD HDD) : 파일 서버와 같이 volume 접근이 드문경우 주로 사용되며 boot volume으로 사용할 수 없음, 비용 저렴
+  + Manetic(Standard) : Root volume으로 사용 가능하며, 1GB 당 비용이 가장 저렴
+
+## ELB(Elastic Load Balancers)
+: 애플리케이션 트래픽을 Amazon EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산해주는 Tool
+
+### ELB 개요
++ 수많은 서버의 흐름을 균형있게 흘러보내는 중추적인 역할
++ 하나의 서버로 traffic이 몰리는 병목현상을 방지
++ Traffic의 흐름을 healty instance로 변화 시켜주는 역할
+
+### ELB 종류
+1. Application Load Balancer
+   + OSI Layer7에서 작동
+   + HTTP, HTTPS와 같은 traffic의 load balancing에 적합
+   + 고급 request routing 설정을 통해 request를 특정 서버로 보낼 수 있음
+2. Network Load Balancer : OSI Layer4에서 작동되며 속도가 매우 빨라 Production 환경에 종종 사용됨
+   + 극도의 Performance가 요구되는 TCP traffic에 적합
+   + 초당 수백만개의 request를 미세한 delay로 처리 가능
+3. Classic Load Balancer : Legacy로 간주되어 거의 사용되지 않음
+   + Layer7의 HTTP/HTTPS 라우팅 지원
+   + Layer4의 TCP traffic 라우팅 지원  
+
+### Load Balancer Error : 504 Error
+: App이나 서비스에서 Response를 수신하지 못하였을때 발생
+
+### X-Forwraded-For Header
+: Private IP Address 밖에 볼수없는 EC2를 대신하여 ELB에서  DNS를 통해 Public IP Address를 식별 해주는 기능
