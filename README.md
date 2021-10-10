@@ -19,8 +19,8 @@ AWS_Basic
             "port":  // SSH 연결이면 22 # 인바운드 규칙에서 22 port 열려있는지 확인
             "type": "sftp",
             "username": "ubuntu",  // putty 설정 때 host name
-            "password": "",
-            "path": "/home/username/작업폴더",
+            "password": "",// 비워두어도 무방
+            "path": //"/home/username/작업폴더",
             "autosave": true,
             "confirm": false,
             "privateKey": // pem 보안키 경로
@@ -111,8 +111,8 @@ AWS_Basic
 ### EBS 개요
 + EC2 Server의 저장공간으로 사용
 + EBS Disk Volume 위에 File System이 생성된다.
-+ 특정 AZ(가용영역)에 생성된다.
-+ 
++ 특정 Availability Zone(가용영역)에 생성된다.
+   
 ### EBS Volume Type
 
 + **SSD군**
@@ -135,10 +135,10 @@ AWS_Basic
 1. Application Load Balancer
    + OSI Layer7에서 작동
    + HTTP, HTTPS와 같은 traffic의 load balancing에 적합
-   + 고급 request routing 설정을 통해 request를 특정 서버로 보낼 수 있음
+   + 고급 request routing 설정을 통해 request를 특정 서버로 보낼 수 있음 
 2. Network Load Balancer : OSI Layer4에서 작동되며 속도가 매우 빨라 Production 환경에 종종 사용됨
    + 극도의 Performance가 요구되는 TCP traffic에 적합
-   + 초당 수백만개의 request를 미세한 delay로 처리 가능
+   + 초당 수백만개의 request를 미세한 delay로 처리 가능  
 3. Classic Load Balancer : Legacy로 간주되어 거의 사용되지 않음
    + Layer7의 HTTP/HTTPS 라우팅 지원
    + Layer4의 TCP traffic 라우팅 지원  
