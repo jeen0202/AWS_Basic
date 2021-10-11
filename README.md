@@ -148,3 +148,92 @@ AWS_Basic
 
 ### X-Forwraded-For Header
 : Private IP Address 밖에 볼수없는 EC2를 대신하여 ELB에서  DNS를 통해 Public IP Address를 식별 해주는 기능
+
+## EC2 - Route53
+**: AWS 에 제공하는 DNS 서비스**
+
+### 주요 적용 서비스
++ EC2 instance
++ S3 Bucket
++ Load Balancer
+
+# AWS RDS(Relational Database Service)
+**: 시중에 존재하는 다양한 종류의 관계형 데이터베이스를 지원하는 서비스**
+
+## Relational DB Service
+**: 데이터를 속성에 따라 분류하여 저장하는 방식**
+
+### RDS의 주요 요소
++ Database
++ Table
++ Data
++ Field
+
+## AWS에서 지원하는 RDS의 종류
+
++ Microsoft SQL
++ Oracle
++ MySQL
++ Postgre
++ **Aurora** : AWS 자체적으로 지원하는 DB로 Free Tier에서는 사용 불가능
++ Maria DB
+
+## Data Warehousing
+**: Bussiness Intelligence에서 주로 사용되는 방대한 분량의 데이터 로드가 필요할 경수 사용되는 시스템**
++ 다양한 소스로부터 방대한 양의 데이터를 보유
++ 사용자의 필요에 의해 데이터를 로드
++ 비교적 Transaction에는 적합하지 않음
+
+### OLTP와 OLAP
++ OLTP(Online Transaction Processing) <br>: INSERT와 같이 종종 사용되어지는, 또는 규모가 작은 데이터를 불러올떄 사용되는 SQL쿼리가 필요할 경우 유용한 방식
++ OLAP(Online Analytical Processing) <br>: 매우 큰 데이터를 불러올 경우 사용, 주로 덩치가 큰 SELECT 쿼리가 사용됨
+
+## RDS - Database Backup
+**: AWS RDS는 Automated Backup(자동백업), DB Snapshots (데이터베이스 스냅샷) 두가지 Backup 방법을 지원한다.**
+
+### Automated Backup(자동백업)
+1. Retention Peroid(1~35일 사이의 기간) 안의 특정 시간으로 DB 복원 가능
+2. AB 매일 생성된 Snapshot과 Transaction Logs를 참고하여 복원 진행
+3. AB는 Default로 설정되어있으며, 백업정보는 S3에 저장
+4. AB동안 약간의 I/O Suspension의 존재 가능 => Latency 존재
+### DB Snapshots(데이터베이스 스냅샷)
+1. 사용자에 의해 실행되는 Backup 방법
+2. 원본 RDS Instance가 삭제되어도 Snapshot은 S3 Bucket에 존재.
+3. 원본이 유실 되었어도 Snapshot만을 사용하여 복구 가능
+
+### Database Backup시 유의사항
+**DB Backup 수행시 Restored된 DB는 원본과 다른 ```RDS Instance```와 ```RDS Endpoint```를 가진다.**
+
+## RDS - Multi AZ, Read Replicas
+
+### Multi AZ
++ 원래 존재하는 RDS DB에 변화가 생길경우 다른 AZ에 복제본을 생성 => Synchronize
++ AWS에 의해 자동 관리
++ 원본 RDS에 장애 발생시 자동으로 다른 AZ의 복제본을 사용
++ Disaster Recovery에만 사용됨(성능 개선 X).
+
+### Read Replicas
++ Production DB의 ```Read Only 복제본```이 생성된다.
++ 주로 Read-Heavy DB작업의 효율 극대화를 위해 사용 => Scaling
++ ```Not for Disaster Recovery```
++ 최대 5개의 Replica DB 허용
++ Replica의 Replica 생성 가능 => Latency 발생
++ 각각의 Replica는 고유한 Endpoint가 존재
+
+## RDS - ElastiCache
+**: File Read에 대한 속도 증가를 위해 AWS에서 사용되는 Cache Memory 서비스**
++ Cloud 내에서 In-Memory Cache 생성
++ Cache를 통하여 빠른 속도로 데이터 Read
++ Read-Heavy App에서 상당한 Latency 감소 효과 발생
++ Memchched 와 Redis로 분류
+### Memcached
+**: 단순한 Object Cache System**
++ ElestiCache에서 Default로 사용됨
++ Auto Scaling처럼 자동으로 유동적인 크기 조정
++ Open Source 지원
+### Redis
+**: 정교한 형태의 데이터를 저장가능한 In-Memory Cache**
++ Key-value, Set, List와 같은 다양한 형태의 Data를 In-Memory에 저장 가능
++ Open Source 지원
++ Multi-AZ 지원
++ Data set의 랭킹을 정렬하는 용도로 사용 가능
