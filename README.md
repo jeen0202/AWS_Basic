@@ -237,3 +237,28 @@ AWS_Basic
 + Open Source 지원
 + Multi-AZ 지원
 + Data set의 랭킹을 정렬하는 용도로 사용 가능
+
+## RDS 실습
+
+### Amazon RDS DB 생성
+
+**Aurora는 Free tier에 해당되지 않으므로 MySQL로 생성**
+1. 엔진 유형에서 MySQL 선택
+2. Default 버전 지정
+3. Template에서 Free tier 선택
+4. 설정 방법
+    + DB 인스턴스 식별자 : DB 이름
+    + 자격 증명
+      + 관리자 ID와 마스터 암호 지정 
+    + DB 인스턴스 클래스 : 버스터블 클래스(저렴하고 작은 용량의 클래스)
+    + 스토리지
+      + 범용 SSD 사용
+      + 스토리지 자동 조정(Auto Scaling) 활성화
+      + 가용성 및 내구성 : Free tier는 해당 없음
+    + 연결
+      + 퍼블릭 액세스 : 외부에서의 접근 허용(X)
+      + 보안 그룹 : 새로 생성
+    + DB 인증옵션 : 암호 인증
+    + 추가 구성
+      + 초기 DB 이름 설정
+5. DNS 접속을 위한 엔드포인트 확인
