@@ -262,3 +262,34 @@ AWS_Basic
     + 추가 구성
       + 초기 DB 이름 설정
 5. DNS 접속을 위한 엔드포인트 확인
+6. EC2 인스턴스 사용자 데이터에 Script 작성
+    ``` 
+    #!/bin/bash
+    yum install httpd php php-mysql -y
+    yum update -y
+    chkconfig httpd on
+    service httpd start
+    echo "<?php phpinfo();?>" > /var/www/html/index.php
+    cd /var/www/ht
+    wget https://aws-learner-storage.s3.ap-northeast-2.amazonaws.com/connect.php
+    ```
+7. 보안 그룹에 기존 보안그룹 선택(http, ssh port Open)
+8. 인스턴스 연결 설정을 통해 terminal에서 접속하여 EC2 동작 확인
+9. 엔드포인트를 통한 접속으로 MySQL 접속
+
+## Amazon RDS 설정
+1. 읽기 복제본 생성
++  Amazon RDS Console의 작업에서 읽기 전용 복제본 생성
+   +  퍼블릭 엑세스 설정 가능
+   +  원본과 별개의 암호화 가능
+   +  생성 리전/서브넷 그룹 지정 가능
+   +  확장 모니터링을 사용한 CloudWatch 연동 가능
+   +  게시 로그 유형 선택 가능
+2. DB 인스턴스 수정
+   + 다중 AZ 설정 가능
+   + 백업 기간 설정 가능
+3. Snapshot
+   + RDS 인스턴스 실행시 자동으로 생성
+   + 주기에 따라 자동으로 생성됨
+   + 인스턴스-작업-특정 시점으로 복원에서 스냅샷 사용 가능
+    
