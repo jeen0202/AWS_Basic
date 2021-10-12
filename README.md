@@ -292,4 +292,59 @@ AWS_Basic
    + RDS 인스턴스 실행시 자동으로 생성
    + 주기에 따라 자동으로 생성됨
    + 인스턴스-작업-특정 시점으로 복원에서 스냅샷 사용 가능
-    
+# Amazon S3(Simple Storage Service)
+**:Cloud 저장소를 지원하는 AWS의 첫 런칭 서비스**
+## S3 특징
++ 안전하고 가변적인 Object Storage 제공
++ 편리한 UI 인터페이스를 통해 어디서나 쉽게 데이터 Save/load 가능
++ 0TB까지 파일 크기 지원
++ 사실상 저장공간 무제한
++ Bucket을 default name으로 사용
++ Bucket은 보편적은 namespace를 사용
+
+## S3 Object 구성요소
++ Key : 파일명
++ Value : 파일 data
++ Version ID : S3 고유특징
++ Meatdata : 파일 변경사항에 대한 다양한 정보
++ CORS(Cross Origin Resource Sharing) : 파일에 대한 동시 접근 지원
+
+## S3 Data Consistency Model
+1. **Read after Write Consistency(PUT)** : 파일이 S3에 적재되면 즉시사용가능
+2. **Eventual Consistency(UPDATE, DELETE)**: Bucket에 올라간 파일 내용의 변경사항이 바로 반경되지 않는다.
+
+## S3 Storage Type
++ 일반 S3
++ S3-IA(Infrequent Access)
++ S3-One Zone IA
++ Glacier
++ Intelligent Tiering
+
+### 일반 S3
++ 보편적으로 사용되는 Type
++ 높은 내구성 + 가용성
+### S3-IA
++ 자주 접근되지 않느나 접근시 빠른 속도야 요구되는 파일이 많을 경우 유용
++ S3에 비해 비용은 저렴하지만 데이터 접근시 추가 비용 발생
++ 멀티 AZ를 통한 Data 저장 가능
+### S3-One Zone IA
++ 단일 AZ에 data 저장
++ 단일 AZ에 의한 데이터 접근 제어
++ S3-IA보다 20% 저렴
+### Giacier
++ 거의 접근하지 않을 데이터 저장시 유용
++ 매우 저렴한 비용
++ 데이터 접근시 4-5시간 소요
+### Intelligent Tiering
++ 데이터 접근 주기가 불규칙할때 유용
++ 2가지 Tier 존재
+  + Frequent Tier : data 접근이 잦을 경우
+  + Infrequent Tier : data접근이 자주 없을 경우
++ Frequent가 좀더 고가
++ 최고의 비용 절감 효율
+
+## S3 요금
++ GB당 비용 지불
++ PUT,GET,COPY 요청 횟수당 비용 지불
++ data Download/Upload시 비용 발생
++ MetaData 정보에 따라 비용 구분
