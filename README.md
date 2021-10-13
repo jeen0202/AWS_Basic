@@ -302,14 +302,14 @@ AWS_Basic
 + Bucket을 default name으로 사용
 + Bucket은 보편적은 namespace를 사용
 
-## S3 Object 구성요소
+### S3 Object 구성요소
 + Key : 파일명
 + Value : 파일 data
 + Version ID : S3 고유특징
 + Meatdata : 파일 변경사항에 대한 다양한 정보
 + CORS(Cross Origin Resource Sharing) : 파일에 대한 동시 접근 지원
 
-## S3 Data Consistency Model
+### S3 Data Consistency Model
 1. **Read after Write Consistency(PUT)** : 파일이 S3에 적재되면 즉시사용가능
 2. **Eventual Consistency(UPDATE, DELETE)**: Bucket에 올라간 파일 내용의 변경사항이 바로 반경되지 않는다.
 
@@ -348,3 +348,55 @@ AWS_Basic
 + PUT,GET,COPY 요청 횟수당 비용 지불
 + data Download/Upload시 비용 발생
 + MetaData 정보에 따라 비용 구분
++ Fress Tier 사용시 기본 5GB 무료
+
+## S3 버킷 생성시 유의 사항
+### S3 사용 예시
++ 파일 저장소(log, image,video...)
++ 웹사이트 호스팅
+
+> CORS(Cross Origin Resource Sharing)<br>
+> : 리전이 서로다른 Bucket간의 데이터 접근을 가능하게 해주는 기술적 요소
+
+### S3 Bucket 접근 제어
++ S3 Bucket는 최초 생성시 Private 상태로 설정되어있음
++ 외부의 접근을 승인하는 2가지 방법
+  + Bucket 정책(Bucket policy) 변경 : private => public
+  + 접근 제어 리스트(Access Control List) 변경 : Bucket의 각 요소에 대한 접근승인
+
+## S3 암호화
+
+### S3 암호화 유형
++ file Upload/Download시 발생
+  + SSL/TLS
++ 대기 상황에서 발생
+  + SEE-S3 : S3 Bucket에 저장되어있는 Object들의 Key값(AES-256)을 변경시키는 Master Key방식
+  + SSE-KMS : AWS에서 일괄 관리되는 Key Management System으로 보안을 해제한 이용자의 정보 확인가능
+  + SSE-C : Key를 사용자가 직접 다룰 수 있으며 사용자가 Key값을 주기적으로 변경시켜야 한다.
+
+### S3 암호화 과정
++ PUT 요청 생성
+  + header에 파일명, 생성일, 생성자, 파일type정보 보유
+  + x-amz-server-side-encryption-parameter : 헤더에 인자가 있을경우 암호화 진행
+  + Bucket Policy 설정을 통해 암호화 되어있지 않은 파일의 Upload 거절 가능
+
+## S3 실습
+> S3는 Global Service 이기에 Region 선택이 필요 없음
+
+### Bucket 생성
++ Bucket name : Region에 관계없이 Unique한 이름으로 지정 - 중복 불가능
++ Public Access Control : 모든 Public Access 차단 권장
++ 객체 잠금 : 객체 저장이후 고정된 시간(무기한)동안 객체 변경 차단
+
+### S3 Bucket
++ **File Upload**
+  + 콘솔을 사용해 직접 File을 Upload 할 수 있음 
+  + 권한항목에서 개별 사용자의 Access 권한을 지정할 수 있음
+  + 속성에서 Storage 클래스와 암호화 설정 가능
++ **File Management**
+  + 콘솔에서 파일을 열어 확인 할 수있음
+  + Public Access가 차단되어있는 파일의 경우 URL로 접근할 수 없음
+  > public Access허용 방법
+  > 1. Bucket의 권한 tab에서 public access 허용
+  > 2. 개별 파일의 권한 tab에서 public read 허용
+  + Bucket Level에서의 public access 권한 허용시 모든 File에 Public Access 가능
