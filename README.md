@@ -400,3 +400,16 @@ AWS_Basic
   > 1. Bucket의 권한 tab에서 public access 허용
   > 2. 개별 파일의 권한 tab에서 public read 허용
   + Bucket Level에서의 public access 권한 허용시 모든 File에 Public Access 가능
+
+### Bucket 정책편집
++ 정책생성기를 통한 정책 생성
+  + Policy Type : S3 Bucket
+  + Statement 추가
+    + Principal : IAM 사용자의 ARN 입력
+    + Actions : 허용 권한
+    + ARN : Bucket의 ARN
+### Bucket 암호화
++ Bucket 생성시 암호와
+  + Bucket 생성의 기본 암호화 설정
+  + AWS KMS - aws/s3 키 선택
+  + 객체 Upload시 속성 tap-  암호화 키 지정 - 기본 암호화 버킷 설정 적용
