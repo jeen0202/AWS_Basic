@@ -420,3 +420,82 @@ AWS_Basic
 + Event를 수집하여 로그파일에 저장
 + Event&Alarm 설정을 통해 SNS, AWS Lambda로 이벤트 발생 전달 가능
 + 지원 AWS 서비스 : EC2, RDS, S3, ELB 등
+
+### CloudWatch 모니터링 종류
++ Basic
+  + 무료
+  + 5분 간격으로 최소의 Metrics 제공
+  + CPU 사용량,디스크 사용량, Network I/O등의 Metric 제공
++ Detailed
+  + 유료
+  + 1분 간격으로 자세한 Metrics 제공
+
+### CloudWatch 사용 예시
+- Use case  : 모바일 앱을 일일 접속자 확인
+- Potential Issue : 특정리에 수많은 traffic이 물리는 병목현상 발생 가능
+- Solution : traffic rate와 사용자의 버튼 클릭 회수를 분석하여 더 효율적은 앱개발 가능
+
+### CloudWatch - Alarm
++ 미리 지정한 임계값에 도달할 시 Alarm을 울릴 수 있음
++ Alarm이 발생할 경우 특정 Event를 작동 시킬 수 있음
++ **Alarm State**
+  + Alarm(경보) : 정해진 임계값에 도달시 발생
+  + Insufficient(부족) : 임계값이 정해져있는 요소가 존재하지 않을 경우
+  + OK(확인) : Alarm이 발생하지 않는 일반적인 상태
++ Billing Alarm
++ 미리 지정한 지출 임계값을 초과할 경우 SNS를 통하여 경고
+
+## CloudWatch 실습
+### CloudWatch 경보 생성
+1. 지표 및 조건 지정
+   + 지표 : 대상 Resource 및 Metric
+   + 조건 : Alarm을 발생시키는데 필요한 조건
+   + 추가 구성 : 데이터 누락시의 처리방법 설정
+2. 작업 구성
+   + 작업을 발생시키는 경보 상태 설정
+   + Alarm 수신 주제 설정
+     + 수신할 email-endpoint 지정 
+3. Auto Scaling 작업 추가
+   + Alarm 발생시 AWS의 Auto Scaling 유무 설정
+4. EC2 작업
+   + EC2 인스턴스에 대한 작업 지정
+5. Alarm 이름 설정
+
+> 새 Alarm 작성시 주제에 묶여있는 email에 구독 확인 메시지가 전송됨<br>
+> endpoint에서 구독했을 경우 Alarm 메시지 전송 시작
+
+# AWS Lambda
+: 코드를 별도의 관리 없이 실행할 수 있는 서버리스 컴퓨팅 서비스
+
+## Lamba 개요
++ AWS Serverless Service의 주축
++ Events를 통해 Lambda 실행
++ NodeJS, Python, Java, GO등 다양한 언어 지원
++ Lambda Function을 통해 Computing
+## AWS Lambda의 비용 체계
++ Lambda Function을 실행될때만 비용 지불
++ 매달 100,0000 함수 호출 무료
+## Lambda 함수 지원사항
++ 최대 300초 Runtime 허용
++ 512MB의 일시적인 디스크공간 제공
++ 최대 50MB Deployment Package 허용 => 초과시 S3 Bucket 사용
+
+## Lambda 사용 예시
+1. S3 Bucket의 PutObject를 감지해 해당 File에서 Data를 정제하여 DB에 적재
+2. IoT의 Topic에서 호출하여 필요한 데이터로 전처리하여 SNS에 연결하여 메시지 전송
+
+## Lambda 실습
+> 계정 동시성(Concurrency)에 주의하며 작성
+ 
+1. 함수작성 
+   + 새로 작성 : 처음부터 함수 구현
+   + 블루프린트 사용 : 자주 사용되는 기능 Template을 선택하여 구현
+   + repo에서 서버리스 앱 찾기 : 공유되고 있는 간단한 Architecture를 불러와 구현
+2. 블루프린트 사용 
+   + 간단한 예제 구현을 위해 hello-world-python 사용
+3. 구성요소 작성
+   + 이름 작성
+   + 역할 설정 : 기본 Lambda 권한을 가진 새 역할 생성
+4. 테스트 실행
+   + 함수 개요 - 테스트 - 테스트 
+> CloudWatch 로그 그룹에서 테스트 Log 확인가능
