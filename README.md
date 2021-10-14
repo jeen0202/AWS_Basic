@@ -413,3 +413,10 @@ AWS_Basic
   + Bucket 생성의 기본 암호화 설정
   + AWS KMS - aws/s3 키 선택
   + 객체 Upload시 속성 tap-  암호화 키 지정 - 기본 암호화 버킷 설정 적용
+
+# AWS CloudWatch
+: 지표를 사용하여 AWS 인프라와 AWS에서 실행되는 애플리케이션의 실시간 모니터링을 지원하는 지표 저장소(Metrics Repo).
++ AWS 리소스 사용의 실시간 모니터링 기능 지원
++ Event를 수집하여 로그파일에 저장
++ Event&Alarm 설정을 통해 SNS, AWS Lambda로 이벤트 발생 전달 가능
++ 지원 AWS 서비스 : EC2, RDS, S3, ELB 등
