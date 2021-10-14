@@ -486,7 +486,8 @@ AWS_Basic
 
 ## Lambda 실습
 > 계정 동시성(Concurrency)에 주의하며 작성
- 
+
+### Lambda 기초 실습
 1. 함수작성 
    + 새로 작성 : 처음부터 함수 구현
    + 블루프린트 사용 : 자주 사용되는 기능 Template을 선택하여 구현
@@ -499,3 +500,46 @@ AWS_Basic
 4. 테스트 실행
    + 함수 개요 - 테스트 - 테스트 
 > CloudWatch 로그 그룹에서 테스트 Log 확인가능
+
+### Lambda 응용 실습
+> S3의 PutOject를 트리거로하여 입력 데이터값에 따른 메시지 출력 함수
+1. 함수 생성
+   + 역할 Template에서 S3 읽기 역할을 선택
+   + S3에서 받아온 데이터를 처리하는 함수 생성
+      ``` python
+      import json
+      import boto3 # AWS Service를 위한 Package
+      from datetime import datetime # 현재시간 
+
+      client = boto3.client('s3') # S3 연동
+
+      def lambda_handler(event, context):
+          what_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # 현재 시간
+          bucket = event['Records'][0]['s3']['bucket']['name'] # bucket 정보 추출
+          key = event['Records'][0]['s3']['object']['key'] # key 정보 추출
+          try:
+              response = client.get_object(Bucket=bucket,Key=key)
+              # Object json type으로 호출
+              
+              text = response["Body"].read().decode()
+              data = json.loads(text)
+              
+              if data['temperature'] > 40:
+                  print(f"Temperature detected : {data['temperature']}C at{what_time}")
+                  print("Be carefule! It's getting really hot!!")
+              else:
+                  print("So far so god")
+          except Exception as e:
+              print(e)
+              raise e
+      ``` 
+    + 함수 Deploy
+2. 연동할 S3 Bucket 생성
+  + 기본 설정으로 Bucket 생성
+  + 속성 tab 에서 이벤트 알림 생성
+    + 사용하고자 하는 이벤트 유형 선택 : ```s3:ObjectCreated:Put```
+    + 접두사/접미사 : 특정 Object를 필터링하기 위해 설정
+    + 전송 대상 설정 : lambda 함수 선택 및 연결할 함수이름 지정
+3. Lambda 함수 개요에서 연결상태 확인
+4. S3에 파일 업로드
+5. CloudWatch Log에서 Response 확인
