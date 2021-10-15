@@ -583,3 +583,69 @@ AWS_Basic
 5. Origin의 Public Access 해제
 6. CloudFront의 Domain으로 콘텐츠에 접속
    + 최초 접속시에는 Cache에 적재되어 있지 않기에 속도차익라 없을 수 있음 
+
+# DynamoDB
+: 기본 스토리지 관리, 시스템 규모 조정을 자동으로 지원해주는 서버리스 Database
+
+## 개요
+- NoSQL(Not only SQL) Database
+- 빠른 Query 처리 속도
+- Auto-Scaling기능 탑재
+- Key-Value 모델 지원
+- 스키마 생성 불필요(자동 생성)
+- Moblie, Web, IoT 데이터 사용에 추천
+- SSD Storage 사용
+## DynamoDB의 구성요소
++ Table
++ Item : RDBS의 Row
++ Attributes : RDBS의 Column
++ JSON, XML와 같은 Key-Value 요소
+
+## DynamoDB - Primary Keys(PK)
++ DynamoDB는 PK를 사용하여 Data Query
++ PK 유형
+  1. Partition KEy
+    - 고유성 (Unique)
+    - 실제 data의 저장위치를 결정
+    - Data중복 불가능 = Partition Key 사용시 두개의 data를 한 위치에 저장할 수 없음
+  2. Composite Key(복합키)
+    - Partition Key + Sort key
+    - 파티션키가 같은 데이터끼리 보관하며, Sort Key를 기준으로 정렬 
++ 복합키 예시
+``` json
+  {
+    "Customer_id" : "28942", //partition key
+    "Transcation_id" : "g9s4dd2",
+    "Item_purchased" : "sofa",
+    "Store_Location" : "seoul",
+    "Transaction_date" : "2020-10-16 14:20:00", // sort key
+  }
+```
+## DynamoDB Data 접근 관리
++ AWS IAM으로 관리 가능
+  + Table 생성과 접근 권한 부여가능
+  + 특정 Table, 특정 Data에만 접근 가능하게 해주는 특별한 IAM 존재
+  
+## DynamoDB - Index
+Index : Query의 처리속도를 향상시키기 위해 Table 전체 조회 대신 특정 Cloumn을 기준점(Pivot)으로 사용하여 Query
+- DynamoDB의 Index 유형
+  - Local Secondary Index
+  - Global Secondary Index
+### Local Secondary Index(LSI)
++ Table 생성시에만 정의 가능
++ Table 생성이후 재정의, 삭제 불가
++ Table생성시 정의했던 것과 같은 Partition Key 사용
+### Global Secondary Index(GSI)
++ Table 생성 후에도 추가,변경, 삭제 가능
++ Table 생성시 사용했던 것과 다른 Partition Key와 Sort Key
+
+## Query와 Scan
+### Query
++ Primary Key를 사용하여 Data 검색
++ Query 사용시 모튼 Column 반환
++ ProjectionExpression 인자를 활용하여 지정한 Column만 보여지게 하는것도 가능
+### Scan
++ Primary Key 없이 모든 Data를 호출
++ Filter를 추가하여 원하는 데이터 추출
++ ProjectionExpression 인자를 사용하여 원하는 Column 추출
+> Query가 Scan보다 효율적인 면이 많아 대부분의 상황에서 Query사용을 권장<br>
