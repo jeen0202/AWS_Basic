@@ -543,3 +543,43 @@ AWS_Basic
 3. Lambda 함수 개요에서 연결상태 확인
 4. S3에 파일 업로드
 5. CloudWatch Log에서 Response 확인
+   
+# CloudFront
+: Edge Location을 활용하여 정적/동적 콘텐츠를 사용자에게 빠르게 전달해주는 CDN(Contents Delivery Network)
+
+## 개요
+- 정적, 동적, 실시간 웹 컨텐츠를 사용자에게 전달
+- Edge Location 사용하여 웹 performance 극대화
+- CDN
+- 분산 네트워크(Distributed Network)
+
+## CloudFront 용어 정리
++ Edge Location : 사용자와 물리적으로 가까운 장소에 존재하는 웹 콘텐츠 Cache의 복제본
++ Origin : 원래 콘텐츠가 저장되어있는 장소로 웹 호스팅이 이루어지는 장소(EC2,S3...)
++ Distribution : CND에서 사용되어 Edge Location을 묶고 있는 개념
+
+## CloudFront 실습
+1. Origin 생성 (S3 Bucket)
+   + Bucket에 대한 퍼블릭 엑세스 허용
+2. 콘텐츠 업로드
+   + 콘텐츠에 대한 Public Read 권한 허용
+3. CloudFront 분산 네트워크 생성
+   + 원본 도메인 : 원본 지정
+   + 원본 경로 : 특정 경로 타켓팅을 위해 사용
+   + S3 버킷 액세스 :CloudFront를 거친 Bucket 접근만 허용하는 옵션
+     + OAI(원본 액세스 ID) : Bucket 접근을 허용하기 위한 ID
+     + 버킷 정책 : 외부에서의 접근을 허용하는 옵션
+   + 뷰어 프로토콜 정책 
+     + Redirect HTTP to HTTPS 옵션으로 자동으로 HTTPS로 변환
+   + 캐시 키 및 원본 요청
+     + TTL 설정 가능
+   + 설정
+     + 대체 도메인 이름 : 보유하고있는 도메인 설정 가능
+4. 배포 관리
+   + 원본 : 새로운 원본 등록 가능
+   + 동작 : 배포 설정 확인 가능
+   + 지리적 제한 : 특정국가의 접근 제한(허용/차단) 가능
+   + 무효화 : 수동으로 Cache 삭제 가능하지만 비용이 발생
+5. Origin의 Public Access 해제
+6. CloudFront의 Domain으로 콘텐츠에 접속
+   + 최초 접속시에는 Cache에 적재되어 있지 않기에 속도차익라 없을 수 있음 
