@@ -649,3 +649,74 @@ Index : Query의 처리속도를 향상시키기 위해 Table 전체 조회 대�
 + Filter를 추가하여 원하는 데이터 추출
 + ProjectionExpression 인자를 사용하여 원하는 Column 추출
 > Query가 Scan보다 효율적인 면이 많아 대부분의 상황에서 Query사용을 권장<br>
+
+## DynamoDB - 실습
+1. Table 생성
+   + 식별을 위한 Partition Key를 지정
+   + 정렬을 위한 Sort Key 지정
+   + 사용자 정의 설정을 사용하면 Auto-Scaling의 세부설정이 가능
+2. DynamoDB 구성
+   + 개요 : Stream 세부 정보, Table 세부 정보 확인 및, ARN 확인
+   + 항목 : Table 내부 Data를 직접 확인 가능
+   + 모니터링 : DynamoDB에 관한 수치데이터 확인 가능, Alarm 설정 가능
+3. Tabe data 생성
+   + 항목 Tab의 항목 생성기능 활용
+   + Json 형식으로 대량의 Data 일괄 추가 가능
+
+### Lambda 함수를 활용한 DynamoDB 항목 추가 
+1. 함수 생성
+   + python 기반 함수 생성
+   + IAM 콘솔로 이동하여 역할 생성
+     + DynamoDB 쓰기 권한을 가지는 새로운 정책 생성
+       + DynamoDB - PutItem - 모든 리소스
+     + 생성된 정책과 연결된 역할 생성
+     > AWS기본실행 정책과도 연결해야 한다.
+    + 생성된 역할을 Lambda와 연결
+2. 함수 작성
++ Deploy-Test이후 Log확인
+
+``` python
+import boto3 # AWS 요소들에 연결하기 위한 Package
+
+def lambda_handler(event, context):
+  client = boto3.resource('dynamodb')
+    table = client.Table('테이블 이름')
+    
+    table.put_item(
+        Item={
+            DynamoDB에 삽입할 Data
+        })
+```
+### batch를 활용한 다중항목 추가
+1. 코드 작성
+``` python
+import boto3
+
+def lambda_handler(event, context):
+    client = boto3.resource('dynamodb')
+    table = client.Table('janjan-learner-dynamodb-table')
+    
+    with table.batch_writer() as batch:
+        batch_put_item(
+        Item={
+           # DynamoDB에 삽입할 Data Json 형식
+        })
+        
+        batch_put_item(
+        Item={
+           # DynamoDB에 삽입할 Data Json 형식
+        })
+        
+        batch_put_item(
+        Item={
+           # DynamoDB에 삽입할 Data Json 형식
+        })
+``` 
+2. 정책 편집
++ IAM - 정책 - 정책 편집 - BatchWriteItem 추가
+
+### DynamoDB Scan & Query
+1. Scan
+  + Table에서 필터를 추가하여 검색
+2. Query
+  + partition_key 입력하여 검색
