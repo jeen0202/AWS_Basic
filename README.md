@@ -720,3 +720,24 @@ def lambda_handler(event, context):
   + Table에서 필터를 추가하여 검색
 2. Query
   + partition_key 입력하여 검색
+
+## DynamoDB - DAX(DynamoDB Accelerator)
+### DAX
+: DynamoDB에서 지원하는 Cluster In-Memory Cache
++ 읽기 요청에 한정하여 기존 10배 이상의 속도 향상
+
+### DAX 원리
++ DAX Caching System
+  + Table에 Data를 Insert/Update 시 DAX에도 반영하여 읽기 요청에 맞는 Data가 DAX에 들어있다면(Cache Hit) Cache에서 즉시 반환하는 방식
++ DAX를 사용이 힘든 유형
+  + 쓰기 요청에 많은 어플리케이션
+  + 읽기 요청이 많지 않은 어플리케이션
+  + Cache Miss가 많이 발생하는 어플리케이션
+
+## DynamoDB - Streams
+: DynamoDB Table에서 일어나는 Event(Insert/Update/Delete)가 시간순서에 맞게 저장되는 저장소
+### Streams 개요
++ Log는 즉각 암호화되며 24동안 보관됨
++ 주로 Event를 기록하고 Event 발생을 외부로 알리는 용도로 사용
+  + Lambda Function과 Pair로 동작하여 Event에 따른 알림
++ Event 발생 전&후에 대한 상광 보고
