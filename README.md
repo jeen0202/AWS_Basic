@@ -741,3 +741,56 @@ def lambda_handler(event, context):
 + 주로 Event를 기록하고 Event 발생을 외부로 알리는 용도로 사용
   + Lambda Function과 Pair로 동작하여 Event에 따른 알림
 + Event 발생 전&후에 대한 상광 보고
+
+# API Gateway
+
+## API와 RESTful API
+### API (Application Programming Interface)
+: 응용프로그램에서 운영체제, 프로그래밍 언어가 제공하는 기능을 제어할 수 있도록 해주는 Tool
+### RESTful API
+: Representational State Tranfer API
++ CREATE, READ, UPDATE, DELETE 유형으로 Server-Client간 통신
++ JSON 형태로 REQ/RES 전달
+> 대부분의 Application은 RESTful API 기반으로 운용되지만 관리가 까다롭다.<br/>
+>> + Authentication & Authorization 필요
+>> + API 요청의 모니터링 필요
+>> + 성능 향상을 위해 API Request Caching 시스템 필요
+## API Gateway
+: 뛰어난 확장성 제공 및 API의 생성/운영/모니터링을 간편하게 해주는 Tool
++ Back-end 서비스(Web App, EC2)내부 데이터에 접근 가능
++ Pay As You Go 기반 요금
+
+## API Gateway 실습
+: API Gateway - Lambda Function - DynamoDB 
+1. REST API(PUBLIC) 구축
+   - 새 API
+   - 엔드포인트 유형 - 지역 or 최적화된 에지
+2. 리소스 생성
+3. Lambda Func 생성
+   - DynamoDB의 쓰기 권한을 가진 역할 부여     
+4. 메서드 생성 
+   - POST
+   - 통합 유형 : Lambda
+   - Lambda 함수 연결
+5. 요청 본문을 작성하여 test
+   - json type으로 요청 작성 
+6. 실제 작동할 Lambda Func 작성
++ dynamodb table에 data를 삽입하는 함수  
+``` python
+import boto3
+
+resoure = boto3.resource('dynamodb')
+table = resource.Table('테이블 이름')
+def lambda_handler(event,context):
+  table.put_item(Item-event)
+  return {"code":200, "Message": "Data Successfully Inserted!"}
+```
+1. API Gateway에 삽입할 data 작성하여 test
+``` json
+{
+    "customer_id" : "38NME",
+    "customer_name":"Sejing",
+    "product_name":"desk",
+    "price":670000
+}
+```
