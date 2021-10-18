@@ -794,3 +794,71 @@ def lambda_handler(event,context):
     "price":670000
 }
 ```
+
+# AWS Code Commit/Deploy & Code Pipeline
+## CI/CD
++ CI(Continuous Integration) : 개발의 지속적인 통합
++ CD(Continuous Deployment) : 지속적인 배포
+### CI/CD의 장점
++ 자동화 시스템(Automation)을 활용한 SW 개발 속도 개선
++ Incremental Change 
+  + 프로그램을 절차적으로 변경해나가는 개발방식
+### CI/CD를 위한 대표적인 중앙 Repository
++ Github
+  + Local & Master branch로 구분
+
+## AWS - Code Commit
+: 프라이빗 Git 리포지토리를 호스팅하는 안전하고 확장성이 뛰어난 관리형 소스 제어 서비스
++ Github와 유사한 파일 보관 방식
++ 저장소에 대한 동시접근 허용
++ 버전 관리 제공
+
+## Code Commit 실습
+1. Repository 생성
+2. 연결 유형 선택
+  + HTTPS
+  + SSH : Root 사용자는 사용 불가
+  + HTTPS(GRC) : Remote 저장소 사용
+3. Console에서 File 생성
+  + main Branch에 바로 적용
+4. Local Branch 생성
+  + Main Branch에서 fetch하여 사용 
+5. 수정사항 작성후 commit
+  + 변경사항이 main Branch에 반영되지 않음
+6. 풀 요청
+7. Root 계정에서 Pull Request 허용
+   + 승인 Tab에서 승인 규칙 변경 가능
+   + 병합 전략 선택 : normally 빠른 전달 사용  
+   + pull 이후 local branch를 삭제하는 옵션 선택 가능
+
+## AWS - Code Deploy
+: 자동 배포(Automated Deployment)를 위한 AWS 리소스
+### Code Deploy 장점
++ 새로운 기능의 빠른 배포
++ SW / Server DownTime이 없음
++ Manual Error 없음
+
+### Code Deploy 유형
++ Rolling 배포
+  + Server 단위의 점층적인 배포
+  + 일시적으로 개별 Server의 부하가 늘어 날 수 있다.
+  + 배포 이전상태로 돌아가기 어려운 방식
++ Blue/Green 배포
+  + Blue(현재 Service) , Green(새로운 Service)로 나누어 새로운 Green 점유율을 점층적으로 늘려나가는 방식
+  + Server를 복사하여 Traffic을 조정하므로 Server의 부하에는 변화가 없다.
+  + 배포 이전상태로 돌아가는것이 수월하다.
+
+## Code Deploy 실습
+1. IAM 역할 생성
+   + S3에 접근 가능한 역할
+   + CodeDeploy에 접근 가능한 역할
+2. EC2 인스턴스 생성
+3. code Deploy를 위한 EC2 환경 설정
+  ``` bash
+  sudo apt-get update
+  sudo apt-get install ruby
+  sudo apt-get install wget
+  wget https://aws-codedeploy-ap-northeast-2.s3.amazonaws.com/latest/install
+  chmod +x install
+  sudo ./install auto
+  ```
