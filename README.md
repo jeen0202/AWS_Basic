@@ -862,3 +862,39 @@ def lambda_handler(event,context):
   chmod +x install
   sudo ./install auto
   ```
+4. IAM에서 적절한 권한을 가지는 새 사용자 추가
+   + 프로그래밍 방식 엑서스로 지정
+   + 정책 연결
+     + AWSCodeDeployFullAccess
+     + AmazonS3FullAccess
+   + access Key 보관
+5. AWS CLI에서 configure 명령어로 접속
+  ``` bash
+  aws configure
+  AWS Access Key ID : 생성한 사용자의 Access key
+  AWS Secret Access Key : 생성한 사용자의 Secret Key
+  Default Regin : 사용할 AWS 리전
+  Default output format : 생략 가능
+  ```
+6. S3 Bucket 생성
+7. AWS Command로 App 생성
+   ``` bash
+   aws deploy create-application --application-name mywebapp
+   ```
+8. AWS Command로 S3에 APP Upload
+   ```
+   aws deploy push --application-name App이름 --s3-location S3Bucket이름/webapp.zip --ignore-hidden-files
+   ``` 
+9. test를 위한 배포 그룹 생성
+  + 서비스 역할 지정
+  + 배포유형 설정 : 현재위치(Rolling)
+  + 환경 구성 : EC2 인스턴스 - 태그 그룹 선택
+  + 배포 설정
+    + AllatOnce : 한번에 전부
+    + OneatTime : 한번에 1개씩
+  + 로드 밸런서 설정 : 해제
+10. 배포 생성
+  + 계정 위치 지정
+  + 추가 배포 동작 설정
+> 배포 실패시 EC2 인스턴스에서 deploy Log 확인할 것
+> 
