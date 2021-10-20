@@ -902,3 +902,32 @@ def lambda_handler(event,context):
 3. ec2 인스턴스 OS와 명령어가 제대로 연결되어있는지 확인
 4. 배포할 Application의 중복 문제 확인
 > 배포 실패시 EC2 인스턴스에서 deploy Log 확인할 것
+
+11. Application 수정
+  + 수정사항 반영후 push commnad 재실행
+  ``` bash
+   aws deploy push --application-name App이름 --s3-location s3://S3Bucket이름/webapp.zip --ignore-hidden-files
+  ``` 
+  + Console에서 변경된 S3 Bucket을 반영한 배포 실행
+> 해당 방식으로 통해 무중단 배포가 가능해진다.
+
+## Code Pipeline
+: CI/CD를 자동으로 처리하고 관리하기 위한 AWS 리소스
+### Code Pipeline의 역할
++ Build, Test, Deploy 과정을 관리
+  + 코드 변경사항 감지 가능
++ SW 및 App 출시 자동화
+  + 빠르고 쉬운 디버깅 지원
+### Depolyment 와 Release
++ Deployment(배포)
+: Release 이전에 Test등을 거치기 위해 특정 그룹에게 먼저 전달되는 과정 
++ Release(출시)
+: SW, App 등이 최종적으로 사용자에게 전달되는 단계
+
+### Code Pipieline 작동 방법
+1. Workflow 정의
+   + Workflow : CodeCommit에서 정의된 Repo 내부의 코드
+2. Repository에서 Code 변경 및 Commit 
+3. Code Bulid에서 Compile, Test, Package 생성
+4. Code Deploy에서 변경사항 Staging 또는 Production 배포
+> Code Pipeline은 상기 과정을 모두 자동화
